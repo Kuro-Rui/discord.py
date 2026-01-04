@@ -95,32 +95,34 @@ class GatewayRatelimiter:
         self.shard_id: Optional[int] = None
 
     def is_ratelimited(self) -> bool:
-        current = time.time()
-        if current > self.window + self.per:
-            return False
-        return self.remaining == 0
+        # current = time.time()
+        # if current > self.window + self.per:
+        #     return False
+        # return self.remaining == 0
+        return False
 
     def get_delay(self) -> float:
-        current = time.time()
+        # current = time.time()
 
-        if current > self.window + self.per:
-            self.remaining = self.max
+        # if current > self.window + self.per:
+        #     self.remaining = self.max
 
-        if self.remaining == self.max:
-            self.window = current
+        # if self.remaining == self.max:
+        #     self.window = current
 
-        if self.remaining == 0:
-            return self.per - (current - self.window)
+        # if self.remaining == 0:
+        #     return self.per - (current - self.window)
 
-        self.remaining -= 1
+        # self.remaining -= 1
         return 0.0
 
     async def block(self) -> None:
-        async with self.lock:
-            delta = self.get_delay()
-            if delta:
-                _log.warning('WebSocket in shard ID %s is ratelimited, waiting %.2f seconds', self.shard_id, delta)
-                await asyncio.sleep(delta)
+        # async with self.lock:
+        #     delta = self.get_delay()
+        #     if delta:
+        #         _log.warning('WebSocket in shard ID %s is ratelimited, waiting %.2f seconds', self.shard_id, delta)
+        #         await asyncio.sleep(delta)
+        pass
 
 
 class KeepAliveHandler(threading.Thread):
@@ -302,7 +304,7 @@ class DiscordWebSocket:
         _max_heartbeat_timeout: float
 
     # fmt: off
-    DEFAULT_GATEWAY    = yarl.URL('wss://gateway.discord.gg/')
+    DEFAULT_GATEWAY    = yarl.URL('ws://localhost:5112/')
     DISPATCH                    = 0
     HEARTBEAT                   = 1
     IDENTIFY                    = 2
@@ -896,7 +898,7 @@ class DiscordVoiceWebSocket:
         ws.gateway = gateway
         ws.seq_ack = seq_ack
         ws._connection = state
-        ws._max_heartbeat_timeout = 60.0
+        ws._max_heartbeat_timeout = 0.0
         ws.thread_id = threading.get_ident()
 
         if resume:
