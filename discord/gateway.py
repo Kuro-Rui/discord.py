@@ -304,7 +304,7 @@ class DiscordWebSocket:
         _max_heartbeat_timeout: float
 
     # fmt: off
-    DEFAULT_GATEWAY    = yarl.URL('ws://localhost:5112/')
+    DEFAULT_GATEWAY    = yarl.URL('ws://localhost:7878/')
     DISPATCH                    = 0
     HEARTBEAT                   = 1
     IDENTIFY                    = 2
